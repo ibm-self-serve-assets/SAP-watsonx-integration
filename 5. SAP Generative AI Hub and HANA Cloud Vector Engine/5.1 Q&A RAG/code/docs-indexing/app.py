@@ -14,7 +14,7 @@ from tika import parser
 import re
 import pandas as pd
 from hdbcli import dbapi
-
+import time
 # Initialize Tika
 
 tika.initVM()
@@ -56,6 +56,8 @@ parameters = {
     "ingestion_chunk_size": 256,
     "ingestion_chunk_overlap": 128
 }
+
+text_embedding_model = os.environ.get("EMBEDDING_MODEL")
 
 from ai_core_sdk.ai_core_v2_client import AICoreV2Client
 from gen_ai_hub.proxy.native.openai import embeddings
@@ -165,7 +167,7 @@ def preprocess_documents(documents):
 
     return content, metadata
 
-def get_embedding(input_text, model="text-embedding-ada-002"):
+def get_embedding(input_text, model=text_embedding_model):
     """
     Fetches embedding for a given text using the specified model.
     """
@@ -270,6 +272,8 @@ if __name__ == "__main__":
         for idx, doc in enumerate(split_docs):
             try:
                 embed = get_embedding(doc.page_content)
+                time.sleep(0.500)
+
                 if embed is None:
                     continue  # Skip documents with failed embeddings
                 document_to_index.append([
