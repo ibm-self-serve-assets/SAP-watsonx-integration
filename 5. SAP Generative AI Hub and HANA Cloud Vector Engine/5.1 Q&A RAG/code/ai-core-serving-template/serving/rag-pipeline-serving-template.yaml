@@ -36,6 +36,8 @@ spec:
         type: string
       - name: HANA_DB_TABLE_NAME
         type: string
+      - name: EMBEDDING_MODEL
+        type: string
   template:
     apiVersion: "serving.kserve.io/v1beta1"
     metadata:
@@ -79,3 +81,5 @@ spec:
               value: "{{inputs.parameters.HANA_DB_PASSWORD}}"
             - name: HANA_DB_TABLE_NAME
               value: "{{inputs.parameters.HANA_DB_TABLE_NAME}}"
+            - name: EMBEDDING_MODEL
+              value: "{{inputs.parameters.EMBEDDING_MODEL}}"
